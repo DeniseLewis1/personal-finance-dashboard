@@ -1,0 +1,17 @@
+def run_data_validation(transactions_df, categories_df):
+    print("Transactions DataFrame:\n")
+    print(transactions_df.head(), "\n")
+    print(transactions_df.info(), "\n")
+    print("Shape:", transactions_df.shape, "\n")
+    print(transactions_df.describe(), "\n")
+    print("Duplicated Rows:\n", transactions_df[transactions_df.duplicated()], "\n")
+    print("Rows with NULL values:\n", transactions_df[transactions_df.isnull().any(axis=1)], "\n")
+    print("Rows with NA values:\n", transactions_df[transactions_df.isna().any(axis=1)], "\n")
+
+    print("Categories DataFrame:\n")
+    print(categories_df.head(), "\n")
+    print(categories_df.info(), "\n")
+    print("Shape:", categories_df.shape, "\n")
+    print("Duplicated Rows:\n", categories_df[categories_df.duplicated()], "\n")
+    print("Rows with NULL values:\n", categories_df[categories_df.isnull().any(axis=1)], "\n")
+    print("Rows with NA values:\n", categories_df[categories_df.isna().any(axis=1)], "\n")

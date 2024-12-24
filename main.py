@@ -8,7 +8,7 @@ transactions_df = pd.read_csv("transactions.csv")
 categories_df = pd.read_csv("categories.csv")
 
 # Explore data files
-run_data_validation(transactions_df, categories_df)
+#run_data_validation(transactions_df, categories_df)
 
 # Connect to database
 conn = sqlite3.connect("finance.db")
@@ -56,6 +56,40 @@ def get_category_id(row):
 # Insert data into transactions table
 transactions_df['category_id'] = transactions_df.apply(get_category_id, axis=1)
 transactions_df.drop(columns=['category'], inplace=True)
-transactions_df.to_sql('transactions', conn, if_exists='append', index=False)
+#transactions_df.to_sql('transactions', conn, if_exists='append', index=False)
+
+
+# Query transactions
+query = """
+    SELECT 
+        t.date,
+        t.name,
+        c.name AS category_name,
+        t.amount,
+        t.account,
+        c.type
+    FROM transactions t 
+    LEFT JOIN categories c 
+        ON t.category_id = c.id
+"""
+df = pd.read_sql(query, conn)
+print(df)
+
+# Calculate totals
+total_income = round(df[df['type'] == 'income']['amount'].sum(), 2)
+total_expenses = round(df[df['type'] == 'expense']['amount'].sum(), 2)
+net_balance = round(total_income + total_expenses, 2)
+
+# Group by category
+spending_by_category = (abs(df[df['type'] == 'expense'].groupby('category_name')['amount'].sum()).sort_values(ascending=False))
+income_by_category = (abs(df[df['type'] == 'income'].groupby('category_name')['amount'].sum()).sort_values(ascending=False))
+
+print(f"Total Income: ${total_income}")
+print(f"Total Expenses: ${abs(total_expenses)}")
+print(f"Net Balance: ${net_balance}")
+print("\nSpending by Category:")
+print(spending_by_category)
+print("\nIncome by Category:")
+print(income_by_category)
 
 conn.close()

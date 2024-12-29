@@ -53,6 +53,10 @@ def get_category_id(row):
         return other_income_id if amount > 0 else other_expense_id
 
 
+################################
+# DATA CHECKS HERE
+################################
+
 # Insert data into transactions table
 transactions_df['category_id'] = transactions_df.apply(get_category_id, axis=1)
 transactions_df.drop(columns=['category'], inplace=True)
@@ -96,9 +100,9 @@ aggregated_df = (
 )
 
 # Add net_balance column
-aggregated_df['net_balance'] = aggregated_df['income'] - aggregated_df['expenses']
+aggregated_df['net_balance'] = aggregated_df['income'] + aggregated_df['expenses']
 
-#print(aggregated_df)
+print(aggregated_df)
 
 # Calculate totals
 total_income = round(df[df['type'] == 'income']['amount'].sum(), 2)
@@ -123,5 +127,42 @@ print("\nIncome by Category:")
 print(income_by_category)
 print("\nNet Balance by Month:")
 print(net_balance_by_month)
+
+# Streamlit
+st.set_page_config(page_title="Personal Finance Dashboard", layout="wide")
+st.title("Personal Finance Dashboard")
+st.header("Key Metrics")
+st.write(f"**Total Income:** ${total_income}")
+st.write(f"**Total Expenses:** ${abs(total_expenses)}")
+st.write(f"**Net Balance:** ${net_balance}")
+
+aggregated_df['month_year_str'] = aggregated_df['month_year'].astype(str)
+
+# Create a 2x2 grid layout
+col1, col2 = st.columns(2)
+col3, col4 = st.columns(2)
+
+# First chart in top-left corner
+with col1:
+    st.header("Net Balance")
+    st.line_chart(data=aggregated_df, x='month_year_str', y='net_balance')
+
+# Second chart in top-right corner
+with col2:
+    st.header("Income vs Expenses")
+    st.bar_chart(data=aggregated_df, x='month_year_str', y=['income', 'expenses'], color=["#FF0000", "#008000"])
+
+# Third chart in bottom-left corner
+with col3:
+    st.header("Spending by Category")
+    st.bar_chart(expenses_by_category, horizontal=True)
+
+# Fourth chart in bottom-right corner
+with col4:
+    st.header("Category Spending Breakdown")
+    fig, ax = plt.subplots()
+    ax.pie(expenses_by_category, labels=expenses_by_category.index, autopct='%1.1f%%', startangle=90)
+    ax.axis('equal')
+    st.pyplot(fig)
 
 conn.close()

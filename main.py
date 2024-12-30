@@ -2,6 +2,7 @@ import sqlite3
 import pandas as pd
 import streamlit as st
 import matplotlib.pyplot as plt
+import plotly.express as px
 from data_validation import run_data_validation
 
 transactions_df = pd.read_csv("transactions.csv")
@@ -142,27 +143,69 @@ aggregated_df['month_year_str'] = aggregated_df['month_year'].astype(str)
 col1, col2 = st.columns(2)
 col3, col4 = st.columns(2)
 
+chart_width = 800
+font_size = max(10, min(chart_width // 40, 30))
+
 # First chart in top-left corner
 with col1:
-    st.header("Net Balance")
-    st.line_chart(data=aggregated_df, x='month_year_str', y='net_balance')
+    fig1 = px.line(aggregated_df, x='month_year_str', y='net_balance')
+    fig1.update_layout(
+        width=chart_width,
+        xaxis_title=None, 
+        yaxis_title=None, 
+        xaxis=dict(tickformat="%b %y", tickmode='auto', nticks=24),
+        yaxis=dict(tickformat="$,"),
+        title=dict(text="Net Balance", font=dict(size=font_size), x=0.5, xanchor='center')
+    )
+    fig1.update_traces(
+        hovertemplate="%{x}: $%{y:,.2f}<extra></extra>"
+    )
+    st.plotly_chart(fig1)
 
 # Second chart in top-right corner
 with col2:
-    st.header("Income vs Expenses")
-    st.bar_chart(data=aggregated_df, x='month_year_str', y=['income', 'expenses'], color=["#FF0000", "#008000"])
+    fig2 = px.bar(aggregated_df, x='month_year_str', y=['income', 'expenses'], color_discrete_map={'income': "#008000", 'expenses': "#FF0000"})
+    fig2.update_layout(
+        width=chart_width,
+        showlegend=False, 
+        xaxis_title=None, 
+        yaxis_title=None, 
+        xaxis=dict(tickformat="%b %y", tickmode='auto', nticks=24),
+        yaxis=dict(tickformat="$,"),
+        title=dict(text="Income vs Expenses", font=dict(size=font_size), x=0.5, xanchor='center')
+    )
+    fig2.update_traces(
+        hovertemplate="%{x}: $%{y:,.2f}<extra></extra>"
+    )
+    st.plotly_chart(fig2)
 
 # Third chart in bottom-left corner
 with col3:
-    st.header("Spending by Category")
-    st.bar_chart(expenses_by_category, horizontal=True)
+    fig3 = px.bar(expenses_by_category, orientation='h')
+    fig3.update_layout(
+        width=chart_width,
+        showlegend=False,
+        xaxis_title=None,
+        yaxis_title=None,
+        xaxis=dict(tickformat="$,", showgrid=True),
+        yaxis=dict(categoryorder='category descending'),
+        title=dict(text="Spending by Category", font=dict(size=font_size), x=0.5, xanchor='center')
+    )
+    fig3.update_traces(
+        hovertemplate="%{label}: $%{value:,.2f}<extra></extra>"
+    )
+    st.plotly_chart(fig3)
 
 # Fourth chart in bottom-right corner
 with col4:
-    st.header("Category Spending Breakdown")
-    fig, ax = plt.subplots()
-    ax.pie(expenses_by_category, labels=expenses_by_category.index, autopct='%1.1f%%', startangle=90)
-    ax.axis('equal')
-    st.pyplot(fig)
+    fig4 = px.pie(expenses_by_category, values=expenses_by_category, names=expenses_by_category.index)
+    fig4.update_layout(
+        width=chart_width,
+        title=dict(text="Category Spending Breakdown", font=dict(size=font_size), x=0.5, xanchor='center')
+    )
+    fig4.update_traces(
+        hovertemplate="%{label}: $%{value:,.2f}<extra></extra>"
+    )
+    st.plotly_chart(fig4)
 
 conn.close()

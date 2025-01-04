@@ -65,8 +65,8 @@ def display_grid(current_year_data, last_year_data, expenses_by_category, curren
 def create_income_chart(current_year_data, last_year_data, current_year, last_year):
     # Create a bar chart for current year income
     bar_chart1 = go.Bar(
-        x=current_year_data['month'],
-        y=current_year_data['income'],
+        x=current_year_data["month"],
+        y=current_year_data["income"],
         name=current_year,
         marker=dict(color=color_green),
         hovertemplate=f"$%{{y:,.2f}}<extra>{current_year}</extra>"
@@ -74,11 +74,11 @@ def create_income_chart(current_year_data, last_year_data, current_year, last_ye
 
     # Create a line chart for last year income
     line_chart1 = go.Scatter(
-        x=last_year_data['month'],
-        y=last_year_data['income'],
-        mode='lines+markers',
+        x=last_year_data["month"],
+        y=last_year_data["income"],
+        mode="lines+markers",
         name=last_year,
-        line=dict(color=color_black, width=2, dash='dash'),
+        line=dict(color=color_black, width=2, dash="dash"),
         marker=dict(size=6),
         hovertemplate=f"$%{{y:,.2f}}<extra>{last_year}</extra>"
     )
@@ -97,20 +97,20 @@ def create_income_chart(current_year_data, last_year_data, current_year, last_ye
             text="Income",
             font=dict(size=font_size),
             x=0.5,
-            xanchor='center'
+            xanchor="center"
         ),
         xaxis=dict(
             title=None,
-            tickmode='array',
-            tickvals=last_year_data['month'],
-            ticktext=last_year_data['month'],
+            tickmode="array",
+            tickvals=last_year_data["month"],
+            ticktext=last_year_data["month"],
         ),
         yaxis=dict(
             title=None,
             tickformat="$~s"
         ),
         legend=dict(title="Year"),
-        barmode='overlay',
+        barmode="overlay",
         paper_bgcolor=color_light_gray,
         plot_bgcolor=color_light_gray
     )
@@ -120,8 +120,8 @@ def create_income_chart(current_year_data, last_year_data, current_year, last_ye
 def create_expenses_chart(current_year_data, last_year_data, current_year, last_year):
     # Create a bar chart for current year expenses
     bar_chart2 = go.Bar(
-        x=current_year_data['month'],
-        y=current_year_data['abs_expenses'],
+        x=current_year_data["month"],
+        y=current_year_data["abs_expenses"],
         name=current_year,
         marker=dict(color=color_red),
         hovertemplate=f"$%{{y:,.2f}}<extra>{current_year}</extra>"
@@ -129,11 +129,11 @@ def create_expenses_chart(current_year_data, last_year_data, current_year, last_
 
     # Create a line chart for last year expenses
     line_chart2 = go.Scatter(
-        x=last_year_data['month'],
-        y=last_year_data['abs_expenses'],
-        mode='lines+markers',
+        x=last_year_data["month"],
+        y=last_year_data["abs_expenses"],
+        mode="lines+markers",
         name=last_year,
-        line=dict(color=color_black, width=2, dash='dash'),
+        line=dict(color=color_black, width=2, dash="dash"),
         marker=dict(size=6),
         hovertemplate=f"$%{{y:,.2f}}<extra>{last_year}</extra>"
     )
@@ -152,20 +152,20 @@ def create_expenses_chart(current_year_data, last_year_data, current_year, last_
             text="Expenses",
             font=dict(size=font_size),
             x=0.5,
-            xanchor='center'
+            xanchor="center"
         ),
         xaxis=dict(
             title=None,
-            tickmode='array',
-            tickvals=last_year_data['month'],
-            ticktext=last_year_data['month'],
+            tickmode="array",
+            tickvals=last_year_data["month"],
+            ticktext=last_year_data["month"],
         ),
         yaxis=dict(
             title=None,
             tickformat="$~s"
         ),
         legend=dict(title="Year"),
-        barmode='overlay',
+        barmode="overlay",
         paper_bgcolor=color_light_gray,
         plot_bgcolor=color_light_gray
     )
@@ -173,19 +173,19 @@ def create_expenses_chart(current_year_data, last_year_data, current_year, last_
 
 # Create and display net balance chart
 def create_net_balance_chart(current_year_data, last_year_data):
-    fig = px.line(current_year_data, x='month', y='net_balance')
+    fig = px.line(current_year_data, x="month", y="net_balance")
     fig.update_layout(
         width=chart_width,
         height=chart_height,
         margin=chart_margin,
         xaxis_title=None, 
         yaxis_title=None, 
-        xaxis=dict(tickmode='array',
-            tickvals=current_year_data['month'],
-            ticktext=current_year_data['month'],
+        xaxis=dict(tickmode="array",
+            tickvals=current_year_data["month"],
+            ticktext=current_year_data["month"],
         ),
         yaxis=dict(tickformat="$~s"),
-        title=dict(text="Net Balance", font=dict(size=font_size), x=0.5, xanchor='center'),
+        title=dict(text="Net Balance", font=dict(size=font_size), x=0.5, xanchor="center"),
         paper_bgcolor=color_light_gray,
         plot_bgcolor=color_light_gray
     )
@@ -202,7 +202,7 @@ def create_spending_chart(expenses_by_category):
         width=chart_width,
         height=chart_height,
         margin=chart_margin,
-        title=dict(text="Spending by Category", font=dict(size=font_size), x=0.5, xanchor='center'),
+        title=dict(text="Spending by Category", font=dict(size=font_size), x=0.5, xanchor="center"),
         paper_bgcolor=color_light_gray,
         plot_bgcolor=color_light_gray
     )

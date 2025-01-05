@@ -67,7 +67,7 @@ def create_income_chart(current_year_data, last_year_data, current_year, last_ye
     bar_chart1 = go.Bar(
         x=current_year_data["month"],
         y=current_year_data["income"],
-        name=current_year,
+        name=str(current_year),
         marker=dict(color=color_green),
         hovertemplate=f"$%{{y:,.2f}}<extra>{current_year}</extra>"
     )
@@ -77,7 +77,7 @@ def create_income_chart(current_year_data, last_year_data, current_year, last_ye
         x=last_year_data["month"],
         y=last_year_data["income"],
         mode="lines+markers",
-        name=last_year,
+        name=str(last_year),
         line=dict(color=color_black, width=2, dash="dash"),
         marker=dict(size=6),
         hovertemplate=f"$%{{y:,.2f}}<extra>{last_year}</extra>"
@@ -122,7 +122,7 @@ def create_expenses_chart(current_year_data, last_year_data, current_year, last_
     bar_chart2 = go.Bar(
         x=current_year_data["month"],
         y=current_year_data["abs_expenses"],
-        name=current_year,
+        name=str(current_year),
         marker=dict(color=color_red),
         hovertemplate=f"$%{{y:,.2f}}<extra>{current_year}</extra>"
     )
@@ -132,7 +132,7 @@ def create_expenses_chart(current_year_data, last_year_data, current_year, last_
         x=last_year_data["month"],
         y=last_year_data["abs_expenses"],
         mode="lines+markers",
-        name=last_year,
+        name=str(last_year),
         line=dict(color=color_black, width=2, dash="dash"),
         marker=dict(size=6),
         hovertemplate=f"$%{{y:,.2f}}<extra>{last_year}</extra>"

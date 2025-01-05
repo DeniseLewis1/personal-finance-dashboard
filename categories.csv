@@ -1,0 +1,20 @@
+﻿id,name,type
+1,Housing,expense
+2,Transportation,expense
+3,Food,expense
+4,Healthcare,expense
+5,Personal & Lifestyle,expense
+6,Entertainment,expense
+7,Education,expense
+8,Debt Payments,expense
+9,Insurance,expense
+10,Savings,expense
+11,Investments,expense
+12,Other,expense
+13,Salary,income
+14,Bonus,income
+15,Freelance,income
+16,Investment Income,income
+17,Reimbursements,income
+18,Gifts,income
+19,Other Income,income

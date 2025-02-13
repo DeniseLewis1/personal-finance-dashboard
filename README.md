@@ -62,3 +62,4 @@ Flow Chart:
 - Integration with real-time financial APIs (e.g., stock data, bank transactions).
 - More customizable and interactive charts/metrics.
 - Ability to view transactions in a separate tab.
+- Ability to upload data files.
